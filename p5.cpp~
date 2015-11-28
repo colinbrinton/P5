@@ -1,0 +1,47 @@
+//  p5.cpp
+
+#include <iostream>
+#include "HuffmanTree.h"
+
+using namespace std;
+
+
+int main(int argc, const char * argv[])
+{
+  HuffmanTree hc;
+
+  cout << "test" << endl;
+	// create code tree
+	//
+	// encode file
+	//
+	// decode file
+	//
+		
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
