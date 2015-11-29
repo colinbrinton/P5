@@ -121,27 +121,49 @@ bool HuffmanTree::createCodeTree(string filename)
 	
 	for(unsigned y = ZERO; y != chars.size(); ++y)
 	  {
-		BST<CharFreq>::BSTNode* node = new  BST<CharFreq>::BSTNode(chars[y]);
+		BST<CharFreq>::BSTNode* nodePtr = new BST<CharFreq>::BSTNode(chars[y]);
 		//BST<CharFreq>::BSTNode* node;
-		node->data.letter = chars[y].letter;
-		node->data.frequency = chars[y].frequency;
-		myPriorityQ.push(node);
+		nodePtr->data.letter = chars[y].letter;
+		nodePtr->data.frequency = chars[y].frequency;
+		myPriorityQ.push(nodePtr);
 	  }
 
-	cout << endl << endl << myPriorityQ.size() << endl;
+	//cout << endl << endl << myPriorityQ.size() << endl;
 
 	//BST<CharFreq>::BSTNode* test;
 
-	cout << myPriorityQ.top()->data.letter << endl;
-	cout << myPriorityQ.top()->data.frequency << endl;
+	while(myPriorityQ.size() != ONE)
+	  {
+	CharFreq topTwoChar;
+	BST<CharFreq>::BSTNode* topTwoPtr = new BST<CharFreq>::BSTNode(topTwoChar);
 
+	topTwoPtr->left = myPriorityQ.top();
 	myPriorityQ.pop();
+	topTwoPtr->right = myPriorityQ.top();
+	myPriorityQ.pop();
+	topTwoPtr->data.frequency = topTwoPtr->left->data.frequency +
+	  topTwoPtr->right->data.frequency;
+	myPriorityQ.push(topTwoPtr);
+	  }
 
-	cout << myPriorityQ.top()->data.letter << endl;
-	 cout << myPriorityQ.top()->data.frequency << endl;
+	cout << endl << endl << myPriorityQ.size() << endl;
+	cout << endl << endl << myPriorityQ.top()->data.frequency << endl;
+
+	//cout << topTwoPtr->left->data.letter << endl;
+	//cout << topTwoPtr->left->data.frequency << endl;
+
+	//cout << endl;
 	
+	//cout << topTwoPtr->right->data.letter << endl;
+	//cout << topTwoPtr->right->data.frequency << endl;
+
+	
+	this->root = myPriorityQ.top();
+	
+	cout << this->root->data.frequency << endl;
 	
 
+   
 	
    
 	// **************************************************************
