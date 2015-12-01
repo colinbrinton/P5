@@ -161,8 +161,14 @@ bool HuffmanTree::createCodeTree(string filename)
 	this->root = myPriorityQ.top();
 	
 	cout << this->root->data.frequency << endl;
-	
 
+	if(!(setEncoding(this->root, "")))
+	  {
+		cout << "Generation of encoding bits failed." << endl;
+		return false;
+	  }
+	
+	//cout << this->root->left->left->left->data.encoding << endl;
    
 	
    
@@ -295,3 +301,19 @@ ostream& operator<<(ostream &out, HuffmanTree &code)
 
 
 
+bool HuffmanTree::setEncoding(BST<CharFreq>::BSTNode *nodePtr, string encode)
+{
+  if(nodePtr == nullptr)
+	return false;
+  else
+	{
+	  if(nodePtr->left == nullptr && nodePtr->right == nullptr)
+		nodePtr->data.encoding = encode;
+	  if(nodePtr->left)
+		setEncoding(nodePtr->left, (encode += "0"));
+      if(nodePtr->right)
+		setEncoding(nodePtr->right, (encode += "1"));
+	  return true;
+	}
+  return false;
+}

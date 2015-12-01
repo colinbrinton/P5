@@ -21,7 +21,6 @@ public:
 	unsigned char letter;
 	float frequency;
 	string encoding;
-    int ascii;
 	
 	bool operator>(const CharFreq &rhs) const
 	{
@@ -51,6 +50,8 @@ private:
 	}
 	
 	int traverseAndPrint(string &bits, int i, BSTNode *cur);
+
+	bool setEncoding(BSTNode *nodePtr, string encode);
 	
 };
 
