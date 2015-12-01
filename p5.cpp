@@ -10,6 +10,7 @@ int main(int argc, const char * argv[])
 {
   HuffmanTree hc;
   string fileName;
+  string outName;
   
 
   cout << "Please enter a filename: ";
@@ -17,6 +18,12 @@ int main(int argc, const char * argv[])
   cout << endl;
 
   hc.createCodeTree(fileName);
+
+  cout << "Please enter the output filename: ";
+  cin >> outName;
+  cout << endl;
+
+  hc.encodeFile(fileName, outName);
  
  
 	// create code tree

@@ -182,8 +182,8 @@ bool HuffmanTree::createCodeTree(string filename)
 	// **************************************************************
 
 
-	cout << "Test Encoding:" << endl;
-	cout <<	getEncoding('q', this->root, "") << endl;
+	//cout << "Test Encoding:" << endl;
+	//cout <<	getEncoding('q', this->root, "") << endl;
 	
 	return true;
 }
@@ -215,6 +215,7 @@ bool HuffmanTree::encodeFile(string originalFilename, string outputFilename)
 	}
 	
 	string currentStream="";
+	//string test = "";
 	
 	const int WRITE_SIZE = 8;
 	
@@ -224,11 +225,14 @@ bool HuffmanTree::encodeFile(string originalFilename, string outputFilename)
 		// TODO: add the appropriate encoding for allText[i] to currentStream
 	  
 	  
+	  currentStream += getEncoding(allText[i], this->root, "");
+		
+	  // **************************************************************
 
-		currentStream += "";
-		
-		// **************************************************************
-		
+	  //cout << currentStream << endl;
+
+
+	  //test += currentStream;
 		while((int)currentStream.length() > WRITE_SIZE)
 		{
 			string byte = currentStream.substr(0, WRITE_SIZE);
@@ -238,6 +242,8 @@ bool HuffmanTree::encodeFile(string originalFilename, string outputFilename)
 			currentStream = currentStream.substr(WRITE_SIZE, currentStream.length()-WRITE_SIZE);
 		}
 	}
+
+	//cout << test << "end" << endl;
 	
 	outStream.close();
 	return false;
@@ -329,6 +335,7 @@ string HuffmanTree::getEncoding(unsigned char input, BSTNode* nodePtr, string ou
   if(nodePtr)
 	{
 	  if(nodePtr->data.letter == input)
+		if((nodePtr->left == nullptr) && (nodePtr->right == nullptr))
 		output = nodePtr->data.encoding;
 	  
 	  if(nodePtr->left)
