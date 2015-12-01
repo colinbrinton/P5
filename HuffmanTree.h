@@ -52,6 +52,8 @@ private:
 	int traverseAndPrint(string &bits, int i, BSTNode *cur);
 
 	bool setEncoding(BSTNode *nodePtr, string encode);
+
+	string getEncoding(unsigned char input, BSTNode* nodePtr, string output);
 	
 };
 

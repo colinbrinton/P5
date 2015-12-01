@@ -180,6 +180,10 @@ bool HuffmanTree::createCodeTree(string filename)
 	
 	
 	// **************************************************************
+
+
+	cout << "Test Encoding:" << endl;
+	cout <<	getEncoding('q', this->root, "") << endl;
 	
 	return true;
 }
@@ -218,7 +222,9 @@ bool HuffmanTree::encodeFile(string originalFilename, string outputFilename)
 	{
 		// **************************************************************
 		// TODO: add the appropriate encoding for allText[i] to currentStream
-		
+	  
+	  
+
 		currentStream += "";
 		
 		// **************************************************************
@@ -317,3 +323,26 @@ bool HuffmanTree::setEncoding(BST<CharFreq>::BSTNode *nodePtr, string encode)
 	}
   return false;
 }
+
+string HuffmanTree::getEncoding(unsigned char input, BSTNode* nodePtr, string output)
+{
+  if(nodePtr)
+	{
+	  if(nodePtr->data.letter == input)
+		output = nodePtr->data.encoding;
+	  
+	  if(nodePtr->left)
+		output = getEncoding(input, nodePtr->left, output);
+
+	  if(nodePtr->right)
+		output = getEncoding(input, nodePtr->right, output);
+	}
+
+  else
+	{
+	  cout << "Error accessing Huffman Tree." << endl;
+	}
+  
+  return output;
+}
+  
