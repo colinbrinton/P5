@@ -128,6 +128,16 @@ bool HuffmanTree::createCodeTree(string filename)
 		myPriorityQ.push(nodePtr);
 	  }
 
+	/*
+	CharFreq charEOF;
+	charEOF.frequency =  ZERO;
+	charEOF.letter = '\0';
+	BST<CharFreq>::BSTNode EOFNode(charEOF);
+						   
+	BST<CharFreq>::BSTNode* nodePtr = &EOFNode;
+	myPriorityQ.push(nodePtr);
+	*/
+
 	//cout << endl << endl << myPriorityQ.size() << endl;
 
 	//BST<CharFreq>::BSTNode* test;
@@ -215,7 +225,7 @@ bool HuffmanTree::encodeFile(string originalFilename, string outputFilename)
 	}
 	
 	string currentStream="";
-	//string test = "";
+	string test = "";
 	
 	const int WRITE_SIZE = 8;
 	
@@ -225,14 +235,14 @@ bool HuffmanTree::encodeFile(string originalFilename, string outputFilename)
 		// TODO: add the appropriate encoding for allText[i] to currentStream
 	  
 	  
-	  currentStream += getEncoding(allText[i], this->root, "");
+	  currentStream += getEncoding(allText[i], this->root);
 		
 	  // **************************************************************
 
 	  //cout << currentStream << endl;
 
 
-	  //test += currentStream;
+	  test += currentStream;
 		while((int)currentStream.length() > WRITE_SIZE)
 		{
 			string byte = currentStream.substr(0, WRITE_SIZE);
@@ -242,9 +252,16 @@ bool HuffmanTree::encodeFile(string originalFilename, string outputFilename)
 			currentStream = currentStream.substr(WRITE_SIZE, currentStream.length()-WRITE_SIZE);
 		}
 	}
-
-	//cout << test << "end" << endl;
-	
+	/*
+	for(int y=0; y <50; y++)
+	  {
+		if( ((y+1)%8) == 0)
+		  cout << "|";
+		
+		cout << test[y];
+	  }
+	cout << "end" << endl << endl;
+	*/
 	outStream.close();
 	return false;
 }
@@ -273,41 +290,164 @@ bool HuffmanTree::decodeFile(string filename)
 	encodedfile.close();
 	
 	int i=0;
+	for(int y=0; y <50; y++)
+	  {
+		if( ((y+1)%8) == 0)
+		  cout << "|";
+		cout <<  bitStream[y];
+	  }
+	cout << "end" << endl << endl;
+	
+	
 	while(i != -1)
 	{
 		i = traverseAndPrint(bitStream, i);
 	}
+	
 	return false;
 }
 
 
 int HuffmanTree::traverseAndPrint(string &bits, int i, BSTNode *cur)
 {
+  // cout << "Starting traverse and print" << endl;
+  
   if(i >= (int)bits.length())
-		return -1;
-	// **************************************************************
+	{
+	  cout << endl;
+	  return -1;
+	}
+
+  /* 
+  cur = cur->left;
+  cur = cur->left;
+  cur = cur->right;
+  cur = cur->left;
+  cur = cur->right;
+  cur = cur->left;
+  cur = cur->left;
+  cur = cur->left;
+  
+  cout << "Please work God, I need help: ";
+  cout << cur->data.letter << endl; 
+  */
+  
+	  // while(!((cur->right == nullptr) && (cur->left == nullptr)))
+	  //	{
+	  //  ++i;
+
+	  //if((cur->right == nullptr) && (cur->left == nullptr))
+	  //	{
+		  //cout << cur->data.letter;
+		  // return i;
+		  //	}
+
+	  while(!((cur->left == nullptr) && (cur->right == nullptr)))
+		{
+		  
+		  if(bits[i] == '0' && cur->left)
+			{
+			  cur = cur->left;
+			  // ++i;
+			}
+		  
+		  else if(bits[i] == '1' && cur->right)
+			{
+			  cur = cur->right;
+			  // ++i;
+			}
+		  else
+			{
+			  cout << '\b';
+			  cout << " ";
+			  cout << endl;
+			  /*
+			  cout << endl << endl << "Error decoding file." << endl << endl;
+			  for(int i= (int)bits.length() - ONE; i > (int)bits.length() - 50; --i)
+				cout << bits[i];
+				cout << endl;*/
+			  return -1;
+			}
+		  ++i;
+		}
+	  cout << cur->data.letter;
+	  return i;
+		  // else
+		  //	cout << "Error in decoding file." << endl;
+		  //}
+	  
+		  //cout << cur->data.letter;
+	  // return i + ONE;
+	  //	}
+	  
+	  /*cout << "Not a leaf" << endl;
+ for(int y=0; y <50; y++)
+   {
+	 if( ((y+1)%8) == 0)
+	   cout << "|";
+	 cout <<  bits[y];
+   }
+ cout << "end" << endl;
+	  */
+
+	  //if(bits[i] == ZERO) // && cur->left)
+		  //return traverseAndPrint(bits, i+ONE, cur->left);
+	  // if(bits[i] == ONE)// && cur->right)
+		   //return traverseAndPrint(bits, i+ONE, cur->right);
+  // **************************************************************
 	// TODO: Write this function using recursion.
 	//  This is essentially your decode function.  You need to step through the tree based on reading 0 or 1 and when you 
         //      reach a leaf, print (using cout) the appropriate character.
 	// i represents your current location in the string
 	// cur represents the cur node in your tree
 	// Don't forget that you need to keep going after printing out a character (which means restarting at the top of the tree)
-	
-	return -1;
+	  cout << endl;
+	  return -1;
 	// **************************************************************
 }
 
 void HuffmanTree::displayCode(ostream &out)
 {
+
+  helperDisplay(out, this->root);
+  
 	// **************************************************************
 	// TODO: print out each letter and its code, you might want to check for special cases (space, newline, etc.)
 	
 	// **************************************************************
 }
 
+void HuffmanTree::helperDisplay(ostream &out, BSTNode* nodePtr)
+{
+  if(nodePtr)
+	{
+	  /*if(nodePtr->left == nullptr && nodePtr->right == nullptr)
+		{
+		  out << "Char: " << nodePtr->data.letter << endl;
+		  out << "Code: " << nodePtr->data.encoding << endl;
+		  }*/
+	  
+	  if(nodePtr->left) 
+		helperDisplay(out, nodePtr->left);
+	  /* if(nodePtr->left == nullptr && nodePtr->right == nullptr)
+		{
+		  out << "Char: " << nodePtr->data.letter << endl;
+		  out << "Code: " << nodePtr->data.encoding << endl;
+		  }*/
+	  if(nodePtr->right)
+		helperDisplay(out, nodePtr->right);
+	  if(nodePtr->left == nullptr && nodePtr->right == nullptr)
+		{
+		  out << "Char: " << nodePtr->data.letter << endl;
+		  out << "Code: " << nodePtr->data.encoding << endl;
+		}
+	  
+	}
+}
+
 ostream& operator<<(ostream &out, HuffmanTree &code)
 {
-	code.displayCode(out);
+  code.displayCode(out);
 	return out;
 }
 
@@ -319,30 +459,50 @@ bool HuffmanTree::setEncoding(BST<CharFreq>::BSTNode *nodePtr, string encode)
 	return false;
   else
 	{
+
 	  if(nodePtr->left == nullptr && nodePtr->right == nullptr)
 		nodePtr->data.encoding = encode;
+	  
 	  if(nodePtr->left)
-		setEncoding(nodePtr->left, (encode += "0"));
-      if(nodePtr->right)
-		setEncoding(nodePtr->right, (encode += "1"));
+		{
+		  encode += "0";
+		  setEncoding(nodePtr->left, encode);
+		  encode.pop_back();
+		}
+	  if(nodePtr->right)
+		{
+		  encode += "1";
+		  setEncoding(nodePtr->right, encode);
+		  encode.pop_back();
+		}
+
 	  return true;
 	}
   return false;
 }
 
-string HuffmanTree::getEncoding(unsigned char input, BSTNode* nodePtr, string output)
+string HuffmanTree::getEncoding(unsigned char input, BSTNode* nodePtr)
 {
   if(nodePtr)
 	{
 	  if(nodePtr->data.letter == input)
-		if((nodePtr->left == nullptr) && (nodePtr->right == nullptr))
-		output = nodePtr->data.encoding;
+		{
+		  // cout << nodePtr->data.letter << endl;
+		//if((nodePtr->left == nullptr) && (nodePtr->right == nullptr))
+		  return (nodePtr->data.encoding);
+		}
+
+	  string output = "";
 	  
 	  if(nodePtr->left)
-		output = getEncoding(input, nodePtr->left, output);
+		output = getEncoding(input, nodePtr->left);
+	  if(output != "")
+		return output;
 
 	  if(nodePtr->right)
-		output = getEncoding(input, nodePtr->right, output);
+		output = getEncoding(input, nodePtr->right);
+	  if(output != "")
+		return output;
 	}
 
   else
@@ -350,6 +510,6 @@ string HuffmanTree::getEncoding(unsigned char input, BSTNode* nodePtr, string ou
 	  cout << "Error accessing Huffman Tree." << endl;
 	}
   
-  return output;
+  return "";
 }
   

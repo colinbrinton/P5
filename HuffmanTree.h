@@ -42,18 +42,19 @@ public:
 	
 	void displayCode(ostream &out);
 	
-private:
-	
+private: 	
 	inline int traverseAndPrint(string &bits, int i)
 	{
 		return traverseAndPrint(bits, i, root);
 	}
+
+	void helperDisplay(ostream &out, BSTNode* nodePtr);
 	
 	int traverseAndPrint(string &bits, int i, BSTNode *cur);
 
 	bool setEncoding(BSTNode *nodePtr, string encode);
 
-	string getEncoding(unsigned char input, BSTNode* nodePtr, string output);
+	string getEncoding(unsigned char input, BSTNode* nodePtr);
 	
 };
 

@@ -24,7 +24,12 @@ int main(int argc, const char * argv[])
   cout << endl;
 
   hc.encodeFile(fileName, outName);
- 
+
+  cout << "Decoding File: " << endl;
+
+  hc.decodeFile(outName);
+
+  cout << hc;
  
 	// create code tree
 	//
